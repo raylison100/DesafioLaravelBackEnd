@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Leed extends Model
+class Doctor extends Model
 {
     //
 }

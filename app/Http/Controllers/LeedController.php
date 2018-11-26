@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\LeedService;
 use Illuminate\Http\Request;
+
 
 class LeedController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    private $leedService;
+
+    function __construct(LeedService $leeds)
+    {
+        $this->leedService = $leeds;
+    }
+
+
     public function index()
     {
-        //
+        return $this->leedService->listAll();
     }
 
 
@@ -25,7 +31,7 @@ class LeedController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       return $this->leedService->register($request);
     }
 
     /**
@@ -36,7 +42,7 @@ class LeedController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
