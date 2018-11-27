@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\DoctorService;
 use Illuminate\Http\Request;
 
 class DoctorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $doctorService;
+
+    function __construct(DoctorService $doctor)
+    {
+        $this->doctorService = $doctor;
+    }
+
+
     public function index()
     {
-
+        return $this->doctorService->listAll();
     }
 
     /**
@@ -24,7 +28,7 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->doctorService->register($request);
     }
 
     /**
@@ -35,9 +39,8 @@ class DoctorController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->doctorService->show($id);
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -48,7 +51,7 @@ class DoctorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->doctorService->update($request,$id);
     }
 
     /**
@@ -59,6 +62,6 @@ class DoctorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->doctorService->delete($id);
     }
 }

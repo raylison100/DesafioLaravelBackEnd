@@ -22,7 +22,6 @@ class LeedController extends Controller
         return $this->leedService->listAll();
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
@@ -42,7 +41,7 @@ class LeedController extends Controller
      */
     public function show($id)
     {
-
+        return $this->leedService->show($id);
     }
 
     /**
@@ -54,7 +53,9 @@ class LeedController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        //dd($request->toArray());
+        return $this->leedService->update($request,$id);
     }
 
     /**
@@ -65,6 +66,6 @@ class LeedController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->leedService->delete($id);
     }
 }

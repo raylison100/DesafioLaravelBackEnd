@@ -18,5 +18,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('leeds', 'LeedController');
+Route::post('leeds/{id}', 'LeedController@update');
+
 Route::resource('user', 'UseController');
+
 Route::resource('doctor', 'DoctorController');
+Route::post('doctor/{id}', 'DoctorController@update');
+
