@@ -14,6 +14,21 @@ use App\Models\Doctor;
 
 class DoctorService
 {
+    public static $instance;
+
+    private function __construct()
+    {
+        self::$instance = $this;
+    }
+
+    public static function get()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
     public function listAll()
     {
         $doctor = Doctor::All();
@@ -25,25 +40,16 @@ class DoctorService
 
     public function register($request)
     {
+        $storage = StorageService::get();
+
         $doctor = new Doctor();
         $doctor->name = $request->name;
         $doctor->email = $request->email;
         $doctor->crm = $request->crm;
         $doctor->specialty = $request->specialty;
-
-        if ($request->hasfile('photograph') && $request->file('photograph')->isValid()) {
-
-            $imageName = kebab_case($doctor->name) . 'img';
-            $extenstion = $request->photograph->extension();
-
-            $nameFile = "{$imageName}.{$extenstion}";
-
-            $doctor->photograph = 'doctor/' . $nameFile;
-            $request->photograph->storeAs('doctor', $nameFile);
-        }
+        $doctor->photograph = $storage->setImage('doctor', $request);
 
         if (!$doctor->save()) {
-
             return response()->json(['data' => ['error' => "not authorized!"]], 401);
         }
         $email = new EmailService();
@@ -73,11 +79,14 @@ class DoctorService
 
     public function delete($id)
     {
+        $storage = StorageService::get();
         $doctor = Doctor::find($id);
 
         $nome = $doctor->name;
+        $img = $doctor->photograph;
 
         if ($doctor->delete()) {
+            $storage->deleteImage($img);
             return response()->json(['data' => "User {$nome} removed successfully"], 200);
         }
         return response()->json(['data' => ['error' => "User not found!"]], 404);

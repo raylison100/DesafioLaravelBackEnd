@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 
-class LeedsSended extends Mailable
+class LeadsSended extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -28,6 +28,6 @@ class LeedsSended extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.leeds.leedsEmail');
+        return $this->view('emails.leads.leadsEmail');
     }
 }

@@ -8,15 +8,30 @@
 
 namespace App\Services;
 
-use App\Models\Leed;
-use Illuminate\Http\Request;
+use App\Models\Lead;
 
 
-class LeedService
+class LeadService
 {
+    public static $instance;
+
+    private function __construct()
+    {
+        self::$instance = $this;
+    }
+
+    public static function get()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
     public function listAll()
     {
-        $leeds = Leed::All();
+        $leeds = Lead::All();
+
         if ($leeds) {
             return response()->json(['data' => $leeds], 200);
         }
@@ -25,25 +40,16 @@ class LeedService
 
     public function register($request)
     {
-        $leeds = new Leed();
+        $storage = StorageService::get();
+
+        $leeds = new Lead();
         $leeds->name = $request->name;
         $leeds->specialty = $request->specialty;
         $leeds->cellPhone = $request->cellPhone;
         $leeds->description = $request->description;
-
-        if ($request->hasfile('photograph') && $request->file('photograph')->isValid()) {
-
-            $imageName = kebab_case($leeds->name) . 'img';
-            $extenstion = $request->photograph->extension();
-
-            $nameFile = "{$imageName}.{$extenstion}";
-
-            $leeds->photograph = 'leeds/' . $nameFile;
-            $request->photograph->storeAs('leeds', $nameFile);
-        }
+        $leeds->photograph = $storage->setImage('leads', $request);
 
         if (!$leeds->save()) {
-
             return response()->json(['data' => ['error' => "not authorized!"]], 401);
         }
         $email = new EmailService();
@@ -51,10 +57,9 @@ class LeedService
         return response()->json(['data' => $leeds], 200);
     }
 
-
     public function show($id)
     {
-        $leeds = Leed::find($id);
+        $leeds = Lead::find($id);
         if ($leeds) {
             return response()->json(['data' => $leeds], 200);
         }
@@ -64,7 +69,7 @@ class LeedService
     public function update($request, $id)
     {
 
-        $leeds = Leed::find($id);
+        $leeds = Lead::find($id);
         if ($leeds->update($request->all())) {
             return response()->json(['data' => "Update user {$leeds->name} successfully"], 200);
         }
@@ -73,11 +78,14 @@ class LeedService
 
     public function delete($id)
     {
-        $leeds = Leed::find($id);
+        $storage = StorageService::get();
+        $leeds = Lead::find($id);
 
         $nome = $leeds->name;
+        $img = $leeds->photograph;
 
         if ($leeds->delete()) {
+            $storage->deleteImage($img);
             return response()->json(['data' => "User {$nome} removed successfully"], 200);
         }
         return response()->json(['data' => ['error' => "User not found!"]], 404);

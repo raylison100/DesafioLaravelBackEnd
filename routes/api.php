@@ -17,11 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('leeds', 'LeedController');
-Route::post('leeds/{id}', 'LeedController@update');
+Route::resource('leads', 'LeadController');
+Route::post('leads/{id}', 'LeadController@update');
 
 Route::resource('user', 'UseController');
 
 Route::resource('doctor', 'DoctorController');
 Route::post('doctor/{id}', 'DoctorController@update');
 
+Route::get('/pictures/{path}/{image}', 'StorageController@getImage');

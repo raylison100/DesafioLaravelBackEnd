@@ -9,9 +9,9 @@ class DoctorController extends Controller
 {
     private $doctorService;
 
-    function __construct(DoctorService $doctor)
+    function __construct()
     {
-        $this->doctorService = $doctor;
+        $this->doctorService = DoctorService::get();
     }
 
 

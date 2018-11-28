@@ -14,7 +14,3 @@ Route::get('/', function () {
     return 'Hello World';
 });
 
-Route::get('storage/{filename}', function ($filename)
-{
-    return Image::make(storage_path('public/' . $filename))->response();
-});

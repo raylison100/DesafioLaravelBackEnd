@@ -13,7 +13,7 @@ class CreateLeedsTable extends Migration
      */
     public function up()
     {
-        Schema::create('leeds', function (Blueprint $table) {
+        Schema::create('leads', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('specialty');
@@ -30,6 +30,6 @@ class CreateLeedsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('leeds');
+        Schema::dropIfExists('leads');
     }
 }

@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\LeedService;
+use App\Services\LeadService;
 use Illuminate\Http\Request;
 
 
-class LeedController extends Controller
+class LeadController extends Controller
 {
 
     private $leedService;
 
-    function __construct(LeedService $leeds)
+    function __construct()
     {
-        $this->leedService = $leeds;
+        $this->leedService = LeadService::get();
     }
 
 
     public function index()
     {
-        return $this->leedService->listAll();
+       return $this->leedService->listAll();
     }
 
     /**
@@ -69,3 +69,5 @@ class LeedController extends Controller
         return $this->leedService->delete($id);
     }
 }
+
+
