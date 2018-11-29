@@ -53,7 +53,7 @@ class LeadService
             return response()->json(['data' => ['error' => "not authorized!"]], 401);
         }
         $email = new EmailService();
-        $email->submit();
+        $email->submit($leeds);
         return response()->json(['data' => $leeds], 200);
     }
 
@@ -61,6 +61,7 @@ class LeadService
     {
         $leeds = Lead::find($id);
         if ($leeds) {
+
             return response()->json(['data' => $leeds], 200);
         }
         return response()->json(['data' => ['error' => "Status not found!"]], 404);

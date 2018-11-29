@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Mail;
 
 class EmailService
 {
-    public function submit()
+    public function submit($leads)
     {
-        Mail::to('raylison100@gmail.com')->send(new LeadsSended());
+        Mail::to('raylison100@gmail.com')->send(new LeadsSended($leads));
     }
 
 }
